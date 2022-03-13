@@ -396,9 +396,9 @@ void epd_get_text_bounds(const EpdFont *font, const char *string,
  * Returns a rect with the bounds of the text
  * @param font : the font used to get the character sizes
  * @param string: pointer to c string
- * @param x : left most position of rectangle
- * @param y : top most point of the rectangle
- * @param margin : to be pllied to the width and height
+ * @param x : left most position of the text rectangle
+ * @param y : top most point of the text rectangle
+ * @param margin : margin applied to all sides 
  * @returns EpdRect with x and y as per the original and height and width
  *       adjusted to fit the text with the margin added as well.
  */ 
