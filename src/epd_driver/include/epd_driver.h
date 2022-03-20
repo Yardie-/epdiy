@@ -210,12 +210,12 @@ void epd_poweron();
 void epd_poweroff();
 
 #if defined(CONFIG_EPD_BOARD_REVISION_LILYGO_T5_47)
-/** Disable display power supply completely touch as well */
-void epd_poweroff_all();
+/** Disable display power supply without dissabling touch as well */
+void epd_poweroff_screen();
 #endif
 
 /** Clear the whole screen by flashing it. */
-void epd_clear();
+void epd_clear(); 
 
 /**
  * Clear an area by flashing it.
@@ -251,6 +251,36 @@ EpdRect epd_full_screen();
  */
 void epd_copy_to_framebuffer(EpdRect image_area, const uint8_t *image_data,
                              uint8_t *framebuffer);
+/**
+ * Get the current scale
+ * Scale is related to the whole screen
+ * so the image top and left will have to be set relative to that scale
+ * ie at a scale of 0.8
+ * top left of a 100 x 100 square (now 80 x 80) will be 80% of the expected point
+ * thus
+ * top_x = top_x / epd_scale_get();
+ * and
+ * top_y = top_y / epd_scale_get();
+ * should give the starting point
+ * rotation is done after scaling so it can be ignored
+ */
+  
+void epd_scale_set(float scale);
+/**
+ * Sets the current scale
+ * Scale is related to the whole screen
+ * so the image top and left will have to be set relative to that scale
+ * ie at a scale of 0.8
+ * top left of a 100 x 100 square (now 80 x 80) will be 80% of the expected point
+ * thus
+ * top_x = top_x / epd_scale_get();
+ * and
+ * top_y = top_y / epd_scale_get();
+ * should give the starting point
+ * rotation is done after scaling so it can be ignored
+ */
+
+float epd_scale_get();
 
 /**
  * Draw a pixel a given framebuffer.

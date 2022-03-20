@@ -151,7 +151,7 @@ static enum EpdDrawError IRAM_ATTR draw_char(const EpdFont *font, uint8_t *buffe
     color_lut[c] = max(0, min(15, props->bg_color + c * color_difference / 15));
   }
   bool background_needed = props->flags & EPD_DRAW_BACKGROUND;
-
+  float scale = epd_scale_get(); 
   for (int y = 0; y < height; y++) {
     int yy = cursor_y - glyph->top + y;
     int start_pos = *cursor_x + left;
@@ -159,8 +159,8 @@ static enum EpdDrawError IRAM_ATTR draw_char(const EpdFont *font, uint8_t *buffe
     int x = max(0, -start_pos);
     int max_x = start_pos + width;
     uint8_t color;
-
     for (int xx = start_pos; xx < max_x; xx++) {
+    
       uint8_t bm = bitmap[y * byte_width + x / 2];
       if ((x & 1) == 0) {
         bm = bm & 0xF;
@@ -249,8 +249,8 @@ EpdRect epd_get_string_rect (const EpdFont *font, const char *string,
     else 
       get_char_bounds(font, c, &temp_x, &temp_y, &minx, &miny, &maxx, &maxy, &props);
   }
-  temp.width = maxx - x + ( margin * 2 );
-  temp.height = maxy - miny + ( margin * 2 );
+  temp.width = ( maxx - x )  +  margin * 2 ;
+  temp.height = ( maxy - miny ) +  margin * 2 ;
   return temp;
 }
 
@@ -384,10 +384,11 @@ enum EpdDrawError epd_write_string(
   enum EpdDrawError err = EPD_DRAW_SUCCESS;
   // taken from the strsep manpage
   int line_start = *cursor_x;
+  float scale = epd_scale_get();
   while ((token = strsep(&newstring, "\n")) != NULL) {
     *cursor_x = line_start;
     err |= epd_write_line(font, token, cursor_x, cursor_y, framebuffer, properties);
-    *cursor_y += font->advance_y;
+    *cursor_y += font->advance_y * scale;
   }
 
   free(tofree);

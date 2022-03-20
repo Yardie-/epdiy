@@ -112,8 +112,8 @@ void epd_poweroff() {
 }
 
 #if defined(CONFIG_EPD_BOARD_REVISION_LILYGO_T5_47)
-void epd_poweroff_all() {
-  cfg_poweroff_all(&config_reg);
+void epd_poweroff_screen() {
+  cfg_poweroff_screen(&config_reg);
   i2s_gpio_detach();
 }
 #endif
